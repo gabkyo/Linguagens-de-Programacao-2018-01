@@ -1,12 +1,7 @@
 package main
 
 import (
-		"bufio"
-    "fmt"
-    "io"
-    "io/ioutil"
-    "os"
-		"string"
+
 )
 //Strings que possivelmente vou usar toda hora  como nomes de arquivo
 const catalogo string = "catalogo.txt"
@@ -23,7 +18,7 @@ const apto string = "apto"
 
 
 type Imoveis interface{
-	Preco() float32
+	Preco() (float32,error)
 	Id() uint64
 	Owner() string
 	Categoria() string
@@ -49,33 +44,83 @@ func (l *Lote) Categoria() {
 type Terreno struct{
 	*Lote //embbebed tem que ser inicailizado
 	solo int32
-	precom2 float32
+	preco_m2 float32 //preco por m^2
 	base1, base2, altura float32
 }
 
-func InicializarTerreno(t *Terreno){
-	t.Lote:=&Lote
+func New(id uint64, owner string,categoria string,solo int32, preco_m2 float32, base1 float32, base2 float32, altura float32) *Terreno{
+	Terreno := &Terreno{
+		Lote : &Lote{
+			id : id,
+			owner : owner,
+			categoria : categoria,
+		},
+		solo : solo,
+		preco_m2 : preco_m2,
+		base1 : base1,
+		base2 : base2,
+		altura : altura,
+	}
 }
 
-func (t *Terreno) Area() float32{
+func (t *Terreno) Area() (float32,error){
 	if(t.categoria == triang ){
-		return t.base1*t.altura/2
+		return t.base1*t.altura/2,nil
 	}else if(t.categoria == retang){
-		return t.base1*t.altura
+		return t.base1*t.altura,nil
 	}else if(t.categoria == trapez){
-		return t.altura*(t.base1+t.base2)/2
-	}else return 0
+		return t.altura*(t.base1+t.base2)/2,nil
+	}
+	return 0,error.new("Tipo invalido para %v ao calcular Area.\n",t.id)
 }
 
-func (t *Terreno) Preco()float32{
+func (t *Terreno) Preco()(float32,error){
+	v:=t.Area() * t.preco_m2
+	if(solo=='A'){
+		return v*0.9,nil
+	}else if(solo=='G'){
+		return v*1.3,nil
+	}else if(solo == 'R'){
+		return v*1.1,nil
+	}
+	return 0,error.new("Solo invalido para %v ao calcular Preco.\n",t.id)
 }
 ////////////////////////////////
 
+type Casa struct{
+	*Lote
+	n_Quartos uint //numero de quartos
+	n_Vagas uint //vagas de garagem
+	n_pavimentos uint //n de pavimentos
+	area_Pavimento float32
+	preco_m2_Pavimento float32
+	area_Livre float32
+	preco_m2_Area_Livre float32
+}
+
+func(c *Casa) Preco()(float32,error){
+	return c.preco_m2_Area_Construida * c.area_Pavimento * c.n_pavimentos + c.preco_m2_Area_Livre* c.area_Livre,nil
+}
 
 ////////////////////////////
 
-type Residencia struct{
+type Apartamento struct{
 	*Lote
-	nQuartos int //numero de quartos
-	nVagas int //vagas de garagem
+	n_Quartos uint //numero de quartos
+	n_Vagas uint //vagas de garagem
+	andar uint
+	area_Construida float32
+	preco_m2_Area_Construida float32
+	lazer int32 //S ou N
+	n_Andares uint
+}
+
+func (a *Apartamento) Preco()(float32,error){
+	v:=c.preco_m2_Area_Construida *c.area_Construida * (0.9 + c.andar/c.n_Andares)
+	if(lazer=='S'){
+		return v*1.15,nil
+	}else if(lazer=='N'){
+		return v,nil
+	}
+	return v,error.new("Lazer invalido para %v ao calcular Preco.\n",a.id)
 }
