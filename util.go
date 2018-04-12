@@ -1,7 +1,7 @@
 package main
 
 import (
-
+	"errors"
 )
 //Strings que possivelmente vou usar toda hora  como nomes de arquivo
 const catalogo string = "catalogo.txt"
@@ -34,9 +34,9 @@ func (l *Lote) Id() uint64{
 	return l.id
 }
 func (l *Lote) Owner() string{
-	return owner
+	return l.owner
 }
-func (l *Lote) Categoria() {
+func (l *Lote) Categoria() string{
 	return l.categoria
 }
 /////////////////////////////////
@@ -61,6 +61,7 @@ func New(id uint64, owner string,categoria string,solo int32, preco_m2 float32, 
 		base2 : base2,
 		altura : altura,
 	}
+	return Terreno
 }
 
 func (t *Terreno) Area() (float32,error){
@@ -71,19 +72,19 @@ func (t *Terreno) Area() (float32,error){
 	}else if(t.categoria == trapez){
 		return t.altura*(t.base1+t.base2)/2,nil
 	}
-	return 0,error.new("Tipo invalido para %v ao calcular Area.\n",t.id)
+	return 0,errors.New("Tipo invalido para "+string(t.id)+" ao calcular Area.\n")
 }
 
 func (t *Terreno) Preco()(float32,error){
 	v:=t.Area() * t.preco_m2
-	if(solo=='A'){
+	if(t.solo=='A'){
 		return v*0.9,nil
-	}else if(solo=='G'){
+	}else if(t.solo=='G'){
 		return v*1.3,nil
-	}else if(solo == 'R'){
+	}else if(t.solo == 'R'){
 		return v*1.1,nil
 	}
-	return 0,error.new("Solo invalido para %v ao calcular Preco.\n",t.id)
+	return 0,errors.New("Solo invalido para "+string(t.id)+" ao calcular Preco.\n")
 }
 ////////////////////////////////
 
@@ -96,6 +97,7 @@ type Casa struct{
 	preco_m2_Pavimento float32
 	area_Livre float32
 	preco_m2_Area_Livre float32
+	preco_m2_Area_Construida float32
 }
 
 func(c *Casa) Preco()(float32,error){
@@ -116,11 +118,11 @@ type Apartamento struct{
 }
 
 func (a *Apartamento) Preco()(float32,error){
-	v:=c.preco_m2_Area_Construida *c.area_Construida * (0.9 + c.andar/c.n_Andares)
-	if(lazer=='S'){
+	v:=a.preco_m2_Area_Construida *a.area_Construida * (0.9 + float32(a.andar/a.n_Andares))
+	if(a.lazer=='S'){
 		return v*1.15,nil
-	}else if(lazer=='N'){
+	}else if(a.lazer=='N'){
 		return v,nil
 	}
-	return v,error.new("Lazer invalido para %v ao calcular Preco.\n",a.id)
+	return v,errors.New("Lazer invalido para "+string(a.id)+" ao calcular Preco.\n")
 }

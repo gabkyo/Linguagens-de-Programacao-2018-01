@@ -1,9 +1,6 @@
 package main
 
 import (
-	"os"
-	"fmt"
-	"errors"
 )
 
 func check(e error){
