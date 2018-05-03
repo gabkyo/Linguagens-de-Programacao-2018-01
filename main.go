@@ -5,7 +5,7 @@ import(
 )
 
 func main(){
-
-  v:= New(64,"teste",triang,'A',2.01,5,0,4)
-  fmt.Printf("Proprietario %v e id %v.\n",v.Owner(),v.Id())
+  var v Imoveis = NewT(64,"teste",triang,'A',2.01,5,0,4)
+  c,e:=v.Preco()
+  fmt.Printf("%v %v\n",c,e)
 }
