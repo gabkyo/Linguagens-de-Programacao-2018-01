@@ -1,7 +1,7 @@
 package main
 
 import (
-	"errors"
+"errors"
 	//"fmt"
 )
 //Strings que possivelmente vou usar toda hora  como nomes de arquivo
@@ -60,14 +60,14 @@ func NewT(id uint64, owner string,categoria string,solo int32, preco_m2 float32,
 			id : id,
 			owner : owner,
 			categoria : categoria,
-		},
-		solo : solo,
-		preco_m2 : preco_m2,
-		base1 : base1,
-		base2 : base2,
-		altura : altura,
-	}
-	return Terreno
+			},
+			solo : solo,
+			preco_m2 : preco_m2,
+			base1 : base1,
+			base2 : base2,
+			altura : altura,
+		}
+		return Terreno
 }
 
 func (t *Terreno) Area() (float32,error){
@@ -86,7 +86,7 @@ func (t *Terreno) Preco()(float32,error){
 	if(e!=nil){
 		return 0,e
 	}
-	 v:= t.preco_m2 * float32(c)
+	v:= t.preco_m2 * float32(c)
 	if(t.solo=='A'){
 		return v*0.9,nil
 	}else if(t.solo=='G'){
@@ -108,35 +108,33 @@ type Casa struct{
 	preco_m2_Pavimento float32
 	area_Livre float32
 	preco_m2_Area_Livre float32
-	preco_m2_Area_Construida float32
 }
 
 func(c *Casa) Preco()(float32,error){
-	return c.preco_m2_Area_Construida * c.area_Pavimento * float32(c.n_pavimentos) + c.preco_m2_Area_Livre* c.area_Livre,nil
+	return c.preco_m2_Pavimento * c.area_Pavimento * float32(c.n_pavimentos) + c.preco_m2_Area_Livre* c.area_Livre,nil
 }
 
 func(c *Casa) Categoria() string{
 	return casa
 }
 
-func NewC(id uint64, owner string,categoria string, n_Quartos uint, n_Vagas uint, n_pavimentos uint, area_Pavimento float32, preco_m2_Pavimento float32, area_Livre float32, preco_m2_Area_Livre float32, preco_m2_Area_Construida float32) *Casa{
+func NewC(id uint64, owner string, n_Quartos uint, n_Vagas uint, n_pavimentos uint, area_Pavimento float32, preco_m2_Pavimento float32, area_Livre float32, preco_m2_Area_Livre float32) *Casa{
 	Casa := &Casa{
 		Lote : &Lote{
 			id : id,
 			owner : owner,
-			categoria : categoria,
-		},
-		n_Quartos : n_Quartos,
-		n_Vagas : n_Vagas,
-		n_pavimentos : n_pavimentos,
-		area_Pavimento : area_Pavimento,
-		preco_m2_Pavimento : preco_m2_Pavimento,
-		area_Livre : area_Livre,
-		preco_m2_Area_Livre : preco_m2_Area_Livre,
-		preco_m2_Area_Construida : preco_m2_Area_Construida,
+			categoria : casa,
+			},
+			n_Quartos : n_Quartos,
+			n_Vagas : n_Vagas,
+			n_pavimentos : n_pavimentos,
+			area_Pavimento : area_Pavimento,
+			preco_m2_Pavimento : preco_m2_Pavimento,
+			area_Livre : area_Livre,
+			preco_m2_Area_Livre : preco_m2_Area_Livre,
+		}
+		return Casa
 	}
-	return Casa
-}
 
 ////////////////////////////
 
@@ -155,30 +153,30 @@ func (a *Apartamento) Preco()(float32,error){
 	v:=a.preco_m2_Area_Construida *a.area_Construida * (0.9 + float32(a.andar/a.n_Andares))
 	if(a.lazer=='S'){
 		return v*1.15,nil
-	}else if(a.lazer=='N'){
-		return v,nil
-	}
-	return v,errors.New("Lazer invalido para "+string(a.id)+" ao calcular Preco.\n")
+		}else if(a.lazer=='N'){
+			return v,nil
+		}
+		return v,errors.New("Lazer invalido para "+string(a.id)+" ao calcular Preco.\n")
 }
 
 func (a *Apartamento) Categoria() string{
 	return apto
 }
 
-func NewA(id uint64, owner string,categoria string,n_Quartos uint, n_Vagas uint, andar uint, area_Construida float32, preco_m2_Area_Construida float32, lazer int32, n_Andares uint) *Apartamento{
+func NewA(id uint64, owner string,n_Quartos uint, n_Vagas uint, andar uint, area_Construida float32, preco_m2_Area_Construida float32, lazer int32, n_Andares uint) *Apartamento{
 	Apartamento := &Apartamento{
 		Lote : &Lote{
 			id : id,
 			owner : owner,
-			categoria : categoria,
-		},
-		n_Quartos : n_Quartos,
-		n_Vagas : n_Vagas,
-		andar : andar,
-		area_Construida : area_Construida,
-		preco_m2_Area_Construida : preco_m2_Area_Construida,
-		lazer : lazer,
-		n_Andares : n_Andares,
+			categoria : apto,
+			},
+			n_Quartos : n_Quartos,
+			n_Vagas : n_Vagas,
+			andar : andar,
+			area_Construida : area_Construida,
+			preco_m2_Area_Construida : preco_m2_Area_Construida,
+			lazer : lazer,
+			n_Andares : n_Andares,
 	}
 	return Apartamento
 }
