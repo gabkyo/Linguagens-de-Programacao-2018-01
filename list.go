@@ -51,7 +51,7 @@ func (b *BasicList) Insert(key Imoveis) { //sort por mais caro
 		for {
 			c,_:=currentNode.key.Preco()
 			d,_:=key.Preco()
-			if  c < d { //se o preco novo e maior que o preco do nodo atual
+			if  c > d { //se o preco do atual e maior que o preco do nodo novo
 				if previousNode!=nil {
 					previousNode.next=newNode
 					newNode.next=currentNode
@@ -87,6 +87,7 @@ func (b *BasicList) Insert(key Imoveis) { //sort por mais caro
 		}
 	}
 }
+
 
 func (b *BasicList) Search(id uint64) (*BasicNode,error) {
 	currentNode := b.head
@@ -132,7 +133,7 @@ func (b *BasicList) Print() {
 	currentNode := b.head
 	for {
 		c,_:=currentNode.key.Preco();
-		fmt.Printf("id: %v owner: %v preco: %.2f\n",currentNode.key.Id(),currentNode.key.Owner(),c)
+		fmt.Printf("id: %v preco: %.2f\n",currentNode.key.Id(),c)
 		//fmt.Printf("[key:%d][val:%v]->", currentNode.key, currentNode.val)
 		if currentNode.Next() == nil {
 			break
@@ -140,4 +141,14 @@ func (b *BasicList) Print() {
 		currentNode = currentNode.Next()
 	}
 	fmt.Printf("fim")
+}
+
+func(b *BasicList) Length() uint{
+	v:=uint(0)
+	currentNode := b.head
+	for currentNode!=nil{
+		v=v+1
+		currentNode=currentNode.next
+	}
+	return v
 }

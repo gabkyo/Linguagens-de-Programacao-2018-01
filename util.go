@@ -3,6 +3,7 @@ package main
 import (
 "errors"
 	//"fmt"
+"strconv"
 )
 //Strings que possivelmente vou usar toda hora  como nomes de arquivo
 const catalogo string = "catalogo.txt"
@@ -23,6 +24,8 @@ type Imoveis interface{
 	Id() uint64
 	Owner() string
 	Categoria() string
+	Info() string //retorna o solo no caso de terreno, e nquartos para casa
+	Area() (float32,error) //retorna area do lote ou area construida
 }
 //////////////////////////////////
 
@@ -76,7 +79,7 @@ func (t *Terreno) Area() (float32,error){
 	}else if(t.categoria == retang){
 		return t.base1*t.altura,nil
 	}else if(t.categoria == trapez){
-		return t.altura*(t.base1+t.base2)/2,nil
+		return (t.base1+t.base2)*t.altura/2,nil
 	}
 	return 0,errors.New("Tipo invalido para "+string(t.id)+" ao calcular Area.\n")
 }
@@ -86,7 +89,7 @@ func (t *Terreno) Preco()(float32,error){
 	if(e!=nil){
 		return 0,e
 	}
-	v:= t.preco_m2 * float32(c)
+	v:= t.preco_m2 * c
 	if(t.solo=='A'){
 		return v*0.9,nil
 	}else if(t.solo=='G'){
@@ -95,6 +98,10 @@ func (t *Terreno) Preco()(float32,error){
 		return v*1.1,nil
 	}
 	return 0,errors.New("Solo invalido para "+string(t.id)+" ao calcular Preco.\n")
+}
+
+func (t *Terreno) Info() string{
+	return string(t.solo)
 }
 
 ////////////////////////////////
@@ -132,9 +139,17 @@ func NewC(id uint64, owner string, n_Quartos uint, n_Vagas uint, n_pavimentos ui
 			preco_m2_Pavimento : preco_m2_Pavimento,
 			area_Livre : area_Livre,
 			preco_m2_Area_Livre : preco_m2_Area_Livre,
-		}
-		return Casa
 	}
+	return Casa
+}
+
+func (t *Casa) Info() string{
+	return strconv.FormatUint(uint64(t.n_Quartos),10)
+}
+
+func (t *Casa) Area() (float32,error){
+	return t.area_Pavimento,nil
+}
 
 ////////////////////////////
 
@@ -150,7 +165,7 @@ type Apartamento struct{
 }
 
 func (a *Apartamento) Preco()(float32,error){
-	v:=a.preco_m2_Area_Construida *a.area_Construida * (0.9 + float32(a.andar/a.n_Andares))
+	v:=a.preco_m2_Area_Construida *a.area_Construida * (0.9 + float32(a.andar)/float32(a.n_Andares))
 	if(a.lazer=='S'){
 		return v*1.15,nil
 		}else if(a.lazer=='N'){
@@ -180,3 +195,13 @@ func NewA(id uint64, owner string,n_Quartos uint, n_Vagas uint, andar uint, area
 	}
 	return Apartamento
 }
+
+func (t *Apartamento) Area() (float32,error){
+	return t.area_Construida,nil
+}
+
+func (t *Apartamento) Info() string{
+	return ""
+}
+
+
