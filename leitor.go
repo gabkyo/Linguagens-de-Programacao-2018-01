@@ -141,7 +141,7 @@ func addTrapez(scanner *bufio.Scanner,lista *BasicList,owner string,id uint64) e
  var f float64
  var s string
  var solo int32
- var preco_m2 ,base1, base2, altura float32 
+ var preco_m2 ,base1, base2, altura float32
  var err error
 
  scanner.Scan()
@@ -183,7 +183,7 @@ func addApto(scanner *bufio.Scanner,lista *BasicList,owner string,id uint64) err
    var u uint64
    var f float64
    var s string
-   var n_Quartos, n_Vagas, andar, n_Andares uint 
+   var n_Quartos, n_Vagas, andar, n_Andares uint
    var area_Construida, preco_m2_Area_Construida float32
     var lazer int32 //S ou N
     var err error
@@ -191,11 +191,11 @@ func addApto(scanner *bufio.Scanner,lista *BasicList,owner string,id uint64) err
     scanner.Scan()
     s=scanner.Text()
     u,err = strconv.ParseUint(s,10,32) // bloco
-    if err!=nil {                              // bloco 
-        return err                             // bloco                       
+    if err!=nil {                              // bloco
+        return err                             // bloco
     }
     n_Quartos=uint(u)
-                                              // bloco     
+                                              // bloco
     scanner.Scan()
     s=scanner.Text()
     u,err = strconv.ParseUint(s,10,32)
@@ -246,7 +246,7 @@ func ler_catalogo(lista *BasicList) error{
 
     scanner := bufio.NewScanner(file)
     for scanner.Scan() {
-        categoria=scanner.Text() 
+        categoria=scanner.Text()
         scanner.Scan()
         s=scanner.Text()
         id,err = strconv.ParseUint(s,10,32)
@@ -265,7 +265,7 @@ func ler_catalogo(lista *BasicList) error{
             addTrapez(scanner,lista,owner,id)
         case apto:
             addApto(scanner,lista,owner,id)
-            default: 
+            default:
             return errors.New("Categoria inválida "+categoria+".\n")
         }
         scanner.Scan() //pular linha em branco
@@ -289,12 +289,12 @@ func ler_atual(lista *BasicList) error{
 
     scanner := bufio.NewScanner(file)
     for scanner.Scan() {
-        tipo=scanner.Text() 
+        tipo=scanner.Text()
 
         switch tipo{
         case "i":
             scanner.Scan()
-            categoria=scanner.Text() 
+            categoria=scanner.Text()
             scanner.Scan()
             s=scanner.Text()
             id,err = strconv.ParseUint(s,10,32)
@@ -314,7 +314,7 @@ func ler_atual(lista *BasicList) error{
                 addTrapez(scanner,lista,owner,id)
             case apto:
                 addApto(scanner,lista,owner,id)
-                default: 
+                default:
                 return errors.New("Categoria inválida "+categoria+".\n")
             }
 
@@ -329,7 +329,7 @@ func ler_atual(lista *BasicList) error{
 
         case "a":
             scanner.Scan()
-            categoria=scanner.Text() 
+            categoria=scanner.Text()
             scanner.Scan()
             s=scanner.Text()
             id,err = strconv.ParseUint(s,10,32)
@@ -351,10 +351,10 @@ func ler_atual(lista *BasicList) error{
                 addTrapez(scanner,lista,owner,id)
             case apto:
                 addApto(scanner,lista,owner,id)
-                default: 
+                default:
                 return errors.New("Categoria inválida "+categoria+".\n")
             }
-        default: 
+        default:
             return errors.New("Comando inválido "+categoria+".\n")
         }
         scanner.Scan() //pular linha em branco
@@ -395,7 +395,7 @@ func saida_print(lista *BasicList, p_imoveis_caros uint64,p_menores_argilosos ui
         }
         currentNode=currentNode.Next()
         contador-=1
-        
+
     }
 
     _,err=fmt.Fprintf(w,"\n")
@@ -414,14 +414,14 @@ func saida_print(lista *BasicList, p_imoveis_caros uint64,p_menores_argilosos ui
     contador=1
     for int(contador) < len(argilosos) { //sort
         a,_:=lista.Search(argilosos[contador-1])
-        b,_:=lista.Search(argilosos[contador]) 
+        b,_:=lista.Search(argilosos[contador])
         aA,_:=a.key.Area()
         bA,_:=b.key.Area()
         if  aA<bA  { //se a area do anterior menor que do proximo ou seja (em ordem de area decrescente)
             argilosos[contador-1],argilosos[contador] = argilosos[contador],argilosos[contador-1]
             contador=0
         }
-        contador+=1       
+        contador+=1
     }
 
     limite= uint(float32(len(argilosos))* (1-float32(p_menores_argilosos)/100)) //malabarismo matematico 2
@@ -455,7 +455,7 @@ func saida_print(lista *BasicList, p_imoveis_caros uint64,p_menores_argilosos ui
             check(err)
             preco,err=currentNode.key.Preco()
             check(err)
-            //fmt.Printf("%d : %v %v / %v %v\n",currentNode.key.Id(),area_Construida,area_limite,preco, preco_limite)
+            //fmt.Printf("%d : %v %v / %v %v / %v\n",currentNode.key.Id(),area_Construida,area_limite,preco, preco_limite,currentNode.key.Info())
             if float64(area_Construida) > area_limite && float64(preco) < preco_limite{
                 casas=append(casas,currentNode.key.Id())
             }
@@ -466,7 +466,7 @@ func saida_print(lista *BasicList, p_imoveis_caros uint64,p_menores_argilosos ui
     contador=1
     for int(contador) < len(casas) { //sort
         a,_:=lista.Search(casas[contador-1])
-        b,_:=lista.Search(casas[contador]) 
+        b,_:=lista.Search(casas[contador])
         s:=a.key.Info()
         var qa,qb uint64
         qa,err=strconv.ParseUint(s,10,64)
@@ -477,8 +477,12 @@ func saida_print(lista *BasicList, p_imoveis_caros uint64,p_menores_argilosos ui
         if  qa<qb  { //se nquartos do anterior menor que do proximo ou seja (em ordem de area decrescente)
             casas[contador-1],casas[contador] = casas[contador],casas[contador-1]
             contador=0
+        }else if qa==qb{
+          if a.key.Id()<b.key.Id() {
+            casas[contador-1],casas[contador] = casas[contador],casas[contador-1]
+          }
         }
-        contador+=1       
+        contador+=1
     }
     contador=0
     for contador <uint(len(casas)){
@@ -505,7 +509,7 @@ func ler_espec(lista *BasicList) error{
     file, err := os.Open(espec)
     var p_imoveis_caros, p_menores_argilosos, i, j, k uint64
     var area_limite, preco_limite float64
-    var s string 
+    var s string
 
     if err != nil {
         return err
