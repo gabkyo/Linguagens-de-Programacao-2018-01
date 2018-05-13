@@ -23,9 +23,9 @@ class LList(object): #Lista ou o inicio dos nodes
 	def Head(self):
 		return self.head
 
-	def Insert(self,key) #key é do tipo Lote ou subclasse
-		if self.head==None:
-			self.head=head
+	def Insert(self,key):#key é do tipo Lote ou subclasse
+		if self.head==None: 
+			self.head=Node(key)
 		else:
 			atual=self.head #node atual
 			antigo=None #node antigo
@@ -51,7 +51,7 @@ class LList(object): #Lista ou o inicio dos nodes
 							novo.next=atual
 							self.head=novo
 						found = 1
-				if atual.next=None:
+				if atual.next==None:
 					break
 				antigo=atual
 				atual=atual.next
@@ -93,8 +93,8 @@ class LList(object): #Lista ou o inicio dos nodes
 		print("head->")
 		atual=self.head
 		while 1:
-			print("id: ",atual.key.Id()," owner: ",atual.key.Owner()," preco: {;.2f}".format(atual.key.Preco()),"\n")
-			if atual.next=None:
+			print("id: ",atual.key.Id()," owner: ",atual.key.Owner()," preco: {:.2f}".format(atual.key.Preco()),"\n")
+			if atual.next==None:
 				break
 			atual=atual.next
 		print("Fim.\n")

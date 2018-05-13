@@ -10,7 +10,7 @@ class Lote(object):
 		return self.categoria
 
 	def Id(self): #auto explicatorio
-		return self.Id
+		return self.id
 
 	def Owner(self): #auto explicatorio
 		return self.owner
@@ -27,7 +27,7 @@ class Lote(object):
 class Casa(Lote):
 	def __init__(self,id,owner,quartos,vagas,pavimentos,area_pavimento,pm2pavimento,area_livre,pm2livre):
 		Lote.__init__(self,id,owner)
-		self.categoria='casa'
+		self.categoria="casa"
 		self.quartos=quartos
 		self.vagas=vagas
 		self.pavimentos=pavimentos
@@ -45,9 +45,10 @@ class Casa(Lote):
 	def Info(self):
 		return str(self.quartos)
 
-class Apto(object):
+class Apto(Lote):
 	def __init__(self,id,owner,quartos,vagas,andar,area_construida,pm2construida,lazer,andares):
 		Lote.__init__(self,id,owner)
+		self.categoria="apto"
 		self.quartos=quartos
 		self.vagas=vagas
 		self.andar=andar
@@ -58,9 +59,9 @@ class Apto(object):
 
 	def Preco(self):
 		if self.lazer=='S':
-			return pm2construida*area_construida*(0.9+andar/andares)*1.15
+			return self.pm2construida*self.area_construida*(0.9+self.andar/self.andares)*1.15
 		else:
-			return pm2construida*area_construida*(0.9+andar/andares)
+			return self.pm2construida*self.area_construida*(0.9+self.andar/self.andares)
 
 	def Area(self):
 		return self.area_construida
@@ -68,7 +69,7 @@ class Apto(object):
 	def Info(self):
 		return ""
 		
-class Terreno(object):
+class Terreno(Lote):
 	def __init__(self, id, owner, categoria, solo, precom2, base1, base2, altura):
 		Lote.__init__(self,id,owner)
 		self.categoria=categoria
