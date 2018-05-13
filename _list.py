@@ -93,11 +93,11 @@ class LList(object): #Lista ou o inicio dos nodes
 		print("head->")
 		atual=self.head
 		while 1:
-			print("id: ",atual.key.Id()," owner: ",atual.key.Owner()," preco: {:.2f}".format(atual.key.Preco()),"\n")
+			print("id: ",atual.key.Id()," owner: ",atual.key.Owner()," preco: {:.2f}".format(atual.key.Preco()))
 			if atual.next==None:
 				break
 			atual=atual.next
-		print("Fim.\n")
+		print("Fim.")
 
 	def Length(self):
 		l=0
