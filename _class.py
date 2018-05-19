@@ -18,7 +18,7 @@ class Lote(object):
 	def Preco(self): #auto explicatorio
 		return 0
 
-	def Area(self): #retorna area relevante para calculos ex area total dos pavimentos
+	def Area(self): #retorna area construida
 		return 0
 
 	def Info(): #retorna informacao necessaria como n de quartos ou tipo do solo
@@ -37,9 +37,9 @@ class Casa(Lote):
 		self.pm2livre=pm2livre
 
 	def Preco(self):
-		return self.pm2construida*self.area_pavimento*self.pavimentos+self.pm2livre*self.area_livre
+		return self.pm2pavimento*self.area_pavimento*self.pavimentos+self.pm2livre*self.area_livre
 
-	def Area(self):
+	def Area(self): #area construida da casa nao inclui area livre
 		return self.area_pavimento*self.pavimentos
 
 	def Info(self):
