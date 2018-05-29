@@ -9,15 +9,15 @@ function Node.new(Lote)
   return self
 end
 
-function  Node:Key():
+function  NodeKey()
   return self.key
 end
 
-function Node:Next():
+function NodeNext()
   return self.next
 end
 
-function Node:HasNext():
+function NodeHasNext()
   if self.next then
     return 1
   else
@@ -27,182 +27,206 @@ end
 
 --- LList ---
 LList={}
-LList.__index=LList
+LList.__index= LList
 
-	function LList.new():
+	function LList.new()
 		local self=setmetatable({},LList)
-    self.head=nil
+    		self.head=nil
     return self
   end
 
-	function Head():
+	function LList:Head()
 		return self.head
   end
 
-	function Insert(key):--key é do tipo Lote ou subclasse
+	function LList:Insert(key)--key é do tipo Lote ou subclasse
 		if self.head==nil then
-			self.head=Node(key)
+			self.head=Node.new(key)
 		else
 			atual=self.head --node atual
-			antigo=None --node antigo
+			antigo=nil --node antigo
 			found=0
 			novo=Node.new(key)
 			while not found do
-				p1=atual.key:Preco()
-				p2=novo.key:Preco()
+				p1=atual.keyPreco()
+				p2=novo.keyPreco()
 				if p1>p2 then --swap novo e atual crescente
-					if antigo != None then
+					if antigo ~= nil then
 						antigo.next=novo
 						novo.next=atual
 					else
 						novo.next=atual
 						self.head=novo
-          end
+          			end
 					found = 1
-				elseif p1==p2: --desempate por id
-					if atual.key:Id() > novo.key:Id() then
-						if antigo != None then
+				elseif p1==p2 then --desempate por id
+					if atual.keyId() > novo.keyId() then
+						if antigo ~= nil then
 							antigo.next=novo
 							novo.next=atual
 						else
 							novo.next=atual
 							self.head=novo
-            end
+            			end
 						found = 1
-          end
-        end
-				if atual.next==None then
+         			end
+        		end
+				if atual.next==nil then
 					break
-        end
+        		end
 				antigo=atual
 				atual=atual.next
+			end
 			if not found then
 				atual.next=novo
-      end
-      end
-    end
-  end
+     		end
+    	end
+  	end
 
-	function Insert_Argiloso(key): --nao verifica tipo so muda criterio de ordenacao
-		if self.head==None:
-			self.head=Node(key)
-		else:
+	function LList:Insert_Argiloso(key) --nao verifica tipo so muda criterio de ordenacao
+		if self.head==nil then
+			self.head=Node.new(key)
+		else
 			atual=self.head --node atual
-			antigo=None --node antigo
+			antigo=nil --node antigo
 			found=0
 			novo=Node(key)
-			while not found:
+			while not found do
 				p1=atual.key.Area()
 				p2=novo.key.Area()
-				if p1<p2: --area decrescente
-					if antigo != None:
+				if p1<p2 then--area decrescente
+					if antigo ~= nil then
 						antigo.next=novo
 						novo.next=atual
-					else:
+					else
 						novo.next=atual
 						self.head=novo
+					end
 					found = 1
-				elif p1==p2:
-					if atual.key.Id() < novo.key.Id():
-						if antigo != None:
+				elseif p1==p2 then
+					if atual.key.Id() < novo.key.Id() then
+						if antigo ~= nil then
 							antigo.next=novo
 							novo.next=atual
-						else:
+						else
 							novo.next=atual
 							self.head=novo
+						end
 						found = 1
-				if atual.next==None:
+					end
+				end
+				if atual.next==nil then
 					break
+				end
 				antigo=atual
 				atual=atual.next
-			if not found:
+			end
+			if not found then
 				atual.next=novo
+			end
+		end
+	end
 
-	function Insert_Casa(key):--nao verifica tipo so muda criterio de ordenacao
-		if self.head==None:
-			self.head=Node(key)
-		else:
+	function LList:Insert_Casa(key)--nao verifica tipo so muda criterio de ordenacao
+		if self.head==nil then
+			self.head=Node.new(key)
+		else
 			atual=self.head --node atual
-			antigo=None --node antigo
+			antigo=nil --node antigo
 			found=0
 			novo=Node(key)
-			while not found:
+			while not found do
 				p1=atual.key.Info() --n de quartos
 				p2=novo.key.Info()
-				if p1<p2: --decrscente
-					if antigo != None:
+				if p1<p2 then --decrscente
+					if antigo ~= nil then
 						antigo.next=novo
 						novo.next=atual
-					else:
+					else
 						novo.next=atual
 						self.head=novo
+					end
 					found = 1
-				elif p1==p2:
-					if atual.key.Id() < novo.key.Id():
-						if antigo != None:
+				elseif p1==p2 then
+					if atual.key.Id() < novo.key.Id() then
+						if antigo ~= nil then
 							antigo.next=novo
 							novo.next=atual
-						else:
+						else
 							novo.next=atual
 							self.head=novo
+						end
 						found = 1
-				if atual.next==None:
+					end
+				end
+				if atual.next==nil then
 					break
+				end
 				antigo=atual
 				atual=atual.next
-			if not found:
+			end
+			if not found then
 				atual.next=novo
+			end
+		end
+	end
 
-	function Search(id): --1= true 0= false
+	function LList:Search(id) --1= true 0= false
 		atual=self.head
-		while 1:
-			if atual.key.Id()==id:
+		while 1 do
+			if atual.key.Id()==id then
 				return atual
+			end
 
-			if atual.next==None:
+			if atual.next==nil then
 				break
-
+			end
 			atual=atual.next
+		end
+		return nil
+	end
 
-		return None
-
-	function Remove(id): --1= removido 0= nao existe
+	function LList:Remove(id) --1= removido 0= nao existe
 		atual=self.head
-		antigo=None
-		while 1:
-			if atual.key.Id()==id:
-				if antigo != None:
+		antigo=nil
+		while 1 do
+			if atual.key.Id()==id then
+				if antigo ~= nil then
 					antigo.next=atual.next
 					return 1
-				else:
+				else
 					self.head=atual.next
 					return 1
-			if atual.next==None:
+				end
+			end
+			if atual.next==nil then
 				break
-
+			end
 			antigo=atual
 			atual=atual.next
+		end
 		return 0
+	end
 
-	function Printar(): --para teste // MUDAR
+	function LList:Printar() --para teste // MUDAR
 		print("head->")
 		atual=self.head
-		while 1:
-			print("id: ",atual.key.Id()," owner: ",atual.key.Owner()," preco: {:.2f}".format(atual.key.Preco()))
-			if atual.next==None:
+		while 1 do
+			print("id %d owner %a preco %d\n",atual.key:Id(),atual.key:Owner(),atual.key:Preco()) -- mudar
+			if atual.next==nil then
 				break
-      end
-			atual=atual.next
-    end
+			end
+   			atual=atual.next
+    	end
 		print("Fim.")
-  end
+  	end
 
-	function Length():
+	function LList:Length()
 		l=0
 		atual=self.head
-		while atual !=nil:
-			l+=1
+		while atual ~=nil do
+			l=l+1
 			atual=atual.next
-    end
+    	end
 		return l
-  end
+ 	end
