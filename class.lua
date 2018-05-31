@@ -11,7 +11,7 @@ function Lote.new(id,owner,categoria)
 end
 
 function Lote:Preco()
-  return 0
+  return -1
 end
 
 function Lote:Id()
@@ -28,6 +28,10 @@ end
 
 function Lote:Info()
   return ""
+end
+
+function Lote:Categoria()
+	return self.categoria
 end
 
 --- Apto ---
@@ -88,11 +92,11 @@ setmetatable(Terreno,{__index = Lote})
 
 --overrides
 function Terreno:Area()
-  if categoria == "triang" then
+  if self.categoria == "triang" then
     return self.base1 * self.altura/2
-  elseif categoria =="retang" then
+  elseif self.categoria =="retang" then
     return self.base1 * self.altura
-  elseif categoria == "trapez" then
+  elseif self.categoria == "trapez" then
     return (self.base1 + self.base2) * self.altura /2
   else
     return 0
@@ -101,11 +105,11 @@ end
 
 function Terreno:Preco()
   if self.solo=='A' then
-    return self.precom2*self.Area()*0.9
+    return self.precom2*self:Area()*0.9
   elseif self.solo=='G' then
-    return self.precom2*self.Area()*1.3
+    return self.precom2*self:Area()*1.3
   elseif self.solo=='R' then
-    return self.precom2*self.Area()*1.1
+    return self.precom2*self:Area()*1.1
   else
     return 0
   end

@@ -19,9 +19,9 @@ end
 
 function NodeHasNext()
   if self.next then
-    return 1
+    return true
   else
-    return 0
+    return false
   end
 end
 
@@ -45,22 +45,23 @@ LList.__index= LList
 		else
 			atual=self.head --node atual
 			antigo=nil --node antigo
-			found=0
+			found=false
 			novo=Node.new(key)
 			while not found do
-				p1=atual.keyPreco()
-				p2=novo.keyPreco()
+				p1=atual.key:Preco()
+				p2=novo.key:Preco()
 				if p1>p2 then --swap novo e atual crescente
 					if antigo ~= nil then
 						antigo.next=novo
 						novo.next=atual
+
 					else
 						novo.next=atual
 						self.head=novo
           			end
-					found = 1
+					found = true
 				elseif p1==p2 then --desempate por id
-					if atual.keyId() > novo.keyId() then
+					if atual.key:Id() > novo.key:Id() then
 						if antigo ~= nil then
 							antigo.next=novo
 							novo.next=atual
@@ -68,7 +69,7 @@ LList.__index= LList
 							novo.next=atual
 							self.head=novo
             			end
-						found = 1
+						found = true
          			end
         		end
 				if atual.next==nil then
@@ -89,11 +90,12 @@ LList.__index= LList
 		else
 			atual=self.head --node atual
 			antigo=nil --node antigo
-			found=0
+			found=false
 			novo=Node(key)
+			print(novo.key.Id())
 			while not found do
-				p1=atual.key.Area()
-				p2=novo.key.Area()
+				p1=atual.key:Area()
+				p2=novo.key:Area()
 				if p1<p2 then--area decrescente
 					if antigo ~= nil then
 						antigo.next=novo
@@ -102,9 +104,9 @@ LList.__index= LList
 						novo.next=atual
 						self.head=novo
 					end
-					found = 1
+					found = true
 				elseif p1==p2 then
-					if atual.key.Id() < novo.key.Id() then
+					if atual.key:Id() < novo.key:Id() then
 						if antigo ~= nil then
 							antigo.next=novo
 							novo.next=atual
@@ -112,7 +114,7 @@ LList.__index= LList
 							novo.next=atual
 							self.head=novo
 						end
-						found = 1
+						found = true
 					end
 				end
 				if atual.next==nil then
@@ -133,11 +135,11 @@ LList.__index= LList
 		else
 			atual=self.head --node atual
 			antigo=nil --node antigo
-			found=0
+			found=false
 			novo=Node(key)
 			while not found do
-				p1=atual.key.Info() --n de quartos
-				p2=novo.key.Info()
+				p1=atual.key:Info() --n de quartos
+				p2=novo.key:Info()
 				if p1<p2 then --decrscente
 					if antigo ~= nil then
 						antigo.next=novo
@@ -146,9 +148,9 @@ LList.__index= LList
 						novo.next=atual
 						self.head=novo
 					end
-					found = 1
+					found = true
 				elseif p1==p2 then
-					if atual.key.Id() < novo.key.Id() then
+					if atual.key:Id() < novo.key:Id() then
 						if antigo ~= nil then
 							antigo.next=novo
 							novo.next=atual
@@ -156,7 +158,7 @@ LList.__index= LList
 							novo.next=atual
 							self.head=novo
 						end
-						found = 1
+						found = true
 					end
 				end
 				if atual.next==nil then
@@ -174,7 +176,7 @@ LList.__index= LList
 	function LList:Search(id) --1= true 0= false
 		atual=self.head
 		while 1 do
-			if atual.key.Id()==id then
+			if atual.key:Id()==id then
 				return atual
 			end
 
@@ -190,13 +192,13 @@ LList.__index= LList
 		atual=self.head
 		antigo=nil
 		while 1 do
-			if atual.key.Id()==id then
+			if atual.key:Id()==id then
 				if antigo ~= nil then
 					antigo.next=atual.next
-					return 1
+					return true
 				else
 					self.head=atual.next
-					return 1
+					return true
 				end
 			end
 			if atual.next==nil then
@@ -205,14 +207,14 @@ LList.__index= LList
 			antigo=atual
 			atual=atual.next
 		end
-		return 0
+		return false
 	end
 
 	function LList:Printar() --para teste // MUDAR
 		print("head->")
 		atual=self.head
 		while 1 do
-			print("id %d owner %a preco %d\n",atual.key:Id(),atual.key:Owner(),atual.key:Preco()) -- mudar
+			print("id",atual.key:Id(),"owner",atual.key:Owner(),"preco",atual.key:Preco(),"\n") -- mudar
 			if atual.next==nil then
 				break
 			end
