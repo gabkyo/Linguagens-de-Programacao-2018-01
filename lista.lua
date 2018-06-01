@@ -91,8 +91,7 @@ LList.__index= LList
 			atual=self.head --node atual
 			antigo=nil --node antigo
 			found=false
-			novo=Node(key)
-			print(novo.key.Id())
+			novo=Node.new(key)
 			while not found do
 				p1=atual.key:Area()
 				p2=novo.key:Area()
@@ -136,7 +135,7 @@ LList.__index= LList
 			atual=self.head --node atual
 			antigo=nil --node antigo
 			found=false
-			novo=Node(key)
+			novo=Node.new(key)
 			while not found do
 				p1=atual.key:Info() --n de quartos
 				p2=novo.key:Info()
