@@ -1,23 +1,27 @@
 (ns classes)
 
-(defn Lote []
-  (let [
-    id (atom nil)
-    owner (atom nil)
+(defprotocol Lote
+	"Base"
+	(Preco [])
+	(Info [])
+	(Area [])
+	(Id [])
+	(Categoria [])
+	(Owner []))
 
-    set (fn [i o]
+(defrecord Terreno [] Lote
+	(let [
+    	id (atom nil)
+		owner (atom nil)
+		categoria (atom nil)
+		solo (atom nil)
+		precom2(atom nil)
+		base1 (atom nil)
+		base2 (atom nil)
+		altura (atom nil)
+	])
+	set (fn [i o c s p b1 b2 a]
           (do (reset! id i)
-              (reset! owner o)))
-    ID (fn [] [@id])
-    OWNER (fn [] [@owner])
-    PRECO (fn [] [0])
-    ]
-    (fn [m]
-      (cond (= m :set) set
-            (= m :ID) ID
-            (= m :OWNER) OWNER
-            (= m :PRECO) PRECO))))
-
-(defn Apto []
-  (derive Apto Lote)
-  )
+			  (reset! owner o)
+			  (reset! categoria c)))
+)
