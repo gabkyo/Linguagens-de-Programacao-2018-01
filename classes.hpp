@@ -31,6 +31,14 @@ public:
 		return 0;
 	}
 
+	virtual uint Quartos(){
+		return 0;
+	}
+
+	virtual string Solo(){
+		return "";
+	}
+
 protected:
 	uint id;
 	string owner,categoria;
@@ -66,16 +74,71 @@ public:
 		}else return 0;
 	}
 
+	string Solo(){
+		return solo;
+	}
+
 protected:
 	string solo;
-	double precom2,base1,base2,altura;	
+	double precom2,base1,base2,altura;
 };
 
 class Apto:public Lote{
 public:
-	Apto(){
-		
+	Apto(uint i, string o,string c,uint nq,uint nv,uint a,double ac,double pa,string l,uint na){
+		nQuartos=nq;
+		nVagas=nv;
+		andar=a;
+		areac=ac;
+		pm2ac=pa;
+		lazer=l;
+		nAndares=na;
 	}
-	
-	
+
+	double Area(){
+		return areac;
+	}
+
+	double Preco(){
+		if (lazer=="S") {
+			return pm2ac*areac*(0.9+(double)andar/(double)andares)*1.15;
+		}else return pm2ac*areac*(0.9+(double)andar/(double)andares);
+	}
+
+protected:
+	uint nQuartos,nVagas,andar,nAndares;
+	string lazer;
+	double areac,pm2ac;
+
+};
+
+class Casa:public Lote{
+public:
+	Casa(uint i, string o,string c,uint q,uint v,uint p,double ap,double pm2p,double al, double pm2l){
+		quartos=q;
+		vagas=v;
+		pavimentos=p;
+		areap=ap;
+		pm2pav=pm2p;
+		areal=al;
+		pm2livre=pm2l;
+	}
+
+	uint Quartos(){
+		return quartos;
+	}
+
+	double Area(){
+		return areac;
+	}
+
+	double Preco(){
+		if (lazer=="S") {
+			return pm2ac*areac*(0.9+(double)andar/(double)andares)*1.15;
+		}else return pm2ac*areac*(0.9+(double)andar/(double)andares);
+	}
+
+protected:
+	uint quartos,vagas,pavimentos;
+	double areap,pm2pav,areal,pm2livre;
 };
