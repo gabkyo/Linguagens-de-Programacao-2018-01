@@ -5,13 +5,13 @@ using namespace std;
 
 class Lote{
 public:
-	Lote(uint i, string o,string c){
+	Lote(int i, string o,string c){
 		id=i;
 		owner=o;
 		categoria=c;
 	}
 
-	uint Id(){
+	int Id(){
 		return id;
 	}
 
@@ -31,7 +31,7 @@ public:
 		return 0;
 	}
 
-	virtual uint Quartos(){
+	virtual int Quartos(){
 		return 0;
 	}
 
@@ -40,13 +40,13 @@ public:
 	}
 
 protected:
-	uint id;
+	int id;
 	string owner,categoria;
 };
 
 class Terreno:public Lote{
 public:
-	Terreno(uint i, string o,string c,string s,double p,double b1,double b2,double a){
+	Terreno(int i, string o,string c,string s,double p,double b1,double b2,double a) : Lote(i,o,c){
 		solo=s;
 		precom2=p;
 		base1=b1;
@@ -85,7 +85,7 @@ protected:
 
 class Apto:public Lote{
 public:
-	Apto(uint i, string o,string c,uint nq,uint nv,uint a,double ac,double pa,string l,uint na){
+	Apto(int i, string o,int nq,int nv,int a,double ac,double pa,string l,int na) : Lote(i,o,"apto"){
 		nQuartos=nq;
 		nVagas=nv;
 		andar=a;
@@ -101,12 +101,12 @@ public:
 
 	double Preco(){
 		if (lazer=="S") {
-			return pm2ac*areac*(0.9+(double)andar/(double)andares)*1.15;
-		}else return pm2ac*areac*(0.9+(double)andar/(double)andares);
+			return pm2ac*areac*(0.9+(double)andar/(double)nAndares)*1.15;
+		}else return pm2ac*areac*(0.9+(double)andar/(double)nAndares);
 	}
 
 protected:
-	uint nQuartos,nVagas,andar,nAndares;
+	int nQuartos,nVagas,andar,nAndares;
 	string lazer;
 	double areac,pm2ac;
 
@@ -114,7 +114,7 @@ protected:
 
 class Casa:public Lote{
 public:
-	Casa(uint i, string o,string c,uint q,uint v,uint p,double ap,double pm2p,double al, double pm2l){
+	Casa(int i, string o,int q,int v,int p,double ap,double pm2p,double al, double pm2l) : Lote(i,o,"casa"){
 		quartos=q;
 		vagas=v;
 		pavimentos=p;
@@ -124,21 +124,19 @@ public:
 		pm2livre=pm2l;
 	}
 
-	uint Quartos(){
+	int Quartos(){
 		return quartos;
 	}
 
 	double Area(){
-		return areac;
+		return areap*pavimentos;
 	}
 
 	double Preco(){
-		if (lazer=="S") {
-			return pm2ac*areac*(0.9+(double)andar/(double)andares)*1.15;
-		}else return pm2ac*areac*(0.9+(double)andar/(double)andares);
+		return pm2pav*areap*pavimentos+pm2livre*areal;
 	}
 
 protected:
-	uint quartos,vagas,pavimentos;
+	int quartos,vagas,pavimentos;
 	double areap,pm2pav,areal,pm2livre;
 };
