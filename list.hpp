@@ -21,7 +21,7 @@ public:
     head=NULL;
   }
 
-  void LList::Insert(Lote *key){
+  void Insert(Lote *key){
     bool found=false;
     node *atual=head, *novo=NewNode(key),*antigo=NULL;
       if (head==NULL) {
@@ -38,7 +38,7 @@ public:
             }
             found=true;
           }else if (atual->key->Preco() == novo->key->Preco()) {
-            if (atual->key->Id() > novo->key.Id()) {
+            if (atual->key->Id() > novo->key->Id()) {
               if (antigo!=NULL) {
                 antigo->next=novo;
                 novo->next=atual;
@@ -59,9 +59,10 @@ public:
       if (!found) {
         cout<<"Erro : id "<<novo->key->Id()<<endl;
       }
+  	}
   }
 
-  void LList::Remove(int id){
+  void Remove(int id){
     node *atual=head, *antigo=NULL;
     bool found=false;
     if (head==NULL) {
@@ -90,15 +91,16 @@ public:
     }
   }
 
-  void LList::Print(){
+  void Print(){
     cout<<"head-> "<<endl;
     node *atual=head;
-    cout.setprecision(2);
+    cout.precision(2);
     while(atual!=NULL){
       cout<<"Id: "<<atual->key->Id()<<" owner: "<<atual->key->Owner()<<" preco: "<<fixed<<atual->key->Preco()<<endl;
+      atual=atual->next;
     }
   }
 
 protected:
   node *head;
-}
+};
