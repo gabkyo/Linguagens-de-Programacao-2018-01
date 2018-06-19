@@ -6,7 +6,9 @@
 int main() {
   LList *lista=new LList();
   ler_catalogo(lista);
+  cout<<"ok";
   ler_atual(lista);
-  lista->Print();
+  ler_espec(lista);
+  //lista->Print();
   return 0;
 }

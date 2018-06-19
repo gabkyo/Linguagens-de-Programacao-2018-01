@@ -195,6 +195,10 @@ public:
 		}
 	}
 
-protected:
+	node *Head(){
+		return head;
+	}
+
+private:
 	node *head;
 };

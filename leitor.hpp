@@ -89,13 +89,15 @@ void ler_catalogo(LList *lista){
 			owner=linha;
 			if (categoria=="apto") {
 				novo=new_apto(catalogo,id,owner);
+				lista->Insert(novo);
 			}else if (categoria=="casa") {
 				novo=new_casa(catalogo,id,owner);
-			}else{
+				lista->Insert(novo);
+			}else if(categoria=="triang" || categoria=="trapez" || categoria=="retang"){
 				novo=new_terreno(catalogo,id,owner,categoria);
+				lista->Insert(novo);
 			}
 			getline(catalogo,linha);
-			lista->Insert(novo);
 		}
 		catalogo.close();
 	}
@@ -140,7 +142,7 @@ void ler_atual(LList *lista){
 					novo=new_terreno(atual,id,owner,categoria);
 				}
 				lista->Insert(novo);
-			}else{
+			}else if(linha=="e"){
 				getline(atual,linha);
 				sscanf(linha.c_str(),"%d",&id);
 				lista->Remove(id);
@@ -152,9 +154,8 @@ void ler_atual(LList *lista){
 }
 
 LList *Argilosos(LList *lista,int pargilosos){
-	node *atual=lista->head;
+	node *atual=lista->Head();
 	LList *temp=new LList(),*argilosos=new LList();
-	int total=lista->Tamanho() * pargilosos /100, contador;
 
 
 	while(atual!=NULL){
@@ -164,8 +165,8 @@ LList *Argilosos(LList *lista,int pargilosos){
 		atual=atual->next;
 
 	}
-	atual=temp->head;
-	contador=temp->Tamanho();
+	atual=temp->Head();
+	int total=temp->Tamanho() * pargilosos /100, contador=temp->Tamanho();
 	while(atual!=NULL){
 		if (contador<=total){
 			argilosos->Insert_Argiloso(atual->key);
@@ -173,11 +174,11 @@ LList *Argilosos(LList *lista,int pargilosos){
 		contador--;
 		atual=atual->next;
 	}
-	return argilosos
+	return argilosos;
 }
 
 LList *Casas(LList *lista,double plim,double arealim){
-	node *atual=lista->head;
+	node *atual=lista->Head();
 	LList *casas=new LList();
 	while(atual!=NULL){
 		if (atual->key->Categoria()=="casa" && atual->key->Preco() < plim && atual->key->Area() > arealim){
@@ -190,7 +191,7 @@ LList *Casas(LList *lista,double plim,double arealim){
 
 LList *Imoveis(LList *lista, int pimoveis){
 	int total=pimoveis * lista->Tamanho() /100,contador=lista->Tamanho();
-	node *atual=lista->head;
+	node *atual=lista->Head();
 	LList *imoveis=new LList();
 	while(atual!=NULL){
 		if (contador<=total){
@@ -208,6 +209,7 @@ void ler_espec(LList *lista){
 	string linha;
 	double arealim,plim;
 	LList *imoveis,*casas,*argilosos;
+	node *atual;
 
 	getline(espec,linha);
 	sscanf(linha.c_str(),"%d",&pimoveis);
@@ -231,7 +233,7 @@ void ler_espec(LList *lista){
 	argilosos=Argilosos(lista,pargilosos);
 	bool tail=false;
 
-	atual=imoveis->head;
+	atual=imoveis->Head();
 	contador=1;
 	while(atual!=NULL){
 		if(contador==i){
@@ -248,24 +250,7 @@ void ler_espec(LList *lista){
 	}
 	saida<<endl;
 
-	atual=argilosos->head;
-	contador=1;
-	while(atual!=NULL){
-		if(contador==i){
-			soma+=atual->key->Id();
-		}else if(contador==0){
-			break;
-		}
-		if (tail){
-			saida<<", ";
-		}else tail=true;
-		saida<<atual->key->Id();
-		atual=atual->next;
-		contador++;
-	}
-	saida<<endl;
-
-	atual=casas->head;
+	atual=argilosos->Head();
 	contador=1;
 	tail=false;
 	while(atual!=NULL){
@@ -283,10 +268,28 @@ void ler_espec(LList *lista){
 	}
 	saida<<endl;
 
+	atual=casas->Head();
+	contador=1;
+	tail=false;
+	while(atual!=NULL){
+		if(contador==k){
+			soma+=atual->key->Id();
+		}else if(contador==0){
+			break;
+		}
+		if (tail){
+			saida<<", ";
+		}else tail=true;
+		saida<<atual->key->Id();
+		atual=atual->next;
+		contador++;
+	}
+	saida<<endl;
+
 	saida.close();
 	ofstream result ("result.txt");
 	result<<soma<<endl;
-	result.close()
+	result.close();
 
 
 }
