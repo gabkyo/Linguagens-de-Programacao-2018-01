@@ -108,7 +108,6 @@ void ler_atual(LList *lista){
 	ifstream atual ("atual.txt");
 	string linha, owner,categoria;
 	int id;
-
 	if (atual.is_open()){
 		while(getline(atual,linha)){
 			if (linha=="i"){
@@ -288,7 +287,7 @@ void ler_espec(LList *lista){
 
 	saida.close();
 	ofstream result ("result.txt");
-	result<<soma<<endl;
+	result<<soma;
 	result.close();
 
 

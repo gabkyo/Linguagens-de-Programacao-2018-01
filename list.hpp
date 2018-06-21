@@ -157,6 +157,7 @@ public:
 					head=atual->next;
 					delete atual->key;
 					delete atual;
+					found=true;
 				}else {
 					delete atual->key;
 					antigo->next=atual->next;
@@ -165,7 +166,7 @@ public:
 				}
 			}
 			if (!found && atual->next==NULL) {
-				cout<<"Não encontrado: id "<<id<<endl;
+				cout<<"Nao encontrado: id "<<id<<endl;
 				return;
 			}
 			antigo=atual;
