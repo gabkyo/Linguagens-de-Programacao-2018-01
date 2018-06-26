@@ -31,3 +31,39 @@
 	(Info [this]
 		(:solo this))
 )
+
+(defrecord Casa[id owner nquartos nvagas npav apav pm2pav al pm2al]
+	Lote
+	(Id [this]
+		(:id this))
+	(Owner [this]
+		(:owner this))
+	(Categoria [this]
+		"casa")
+	(Area [this]
+		(* (:npav this) (:apav this)))
+	(Preco [this]
+		(+ (* (Area this) (:pm2pav this)) (* (:pm2al this) (:al this))))
+	(Info [this]
+		(:nquartos this))
+)
+
+(defrecord Apto[id owner nquartos nvagas andar ac pm2ac lazer andares]
+	Lote
+	(Id [this]
+		(:id this))
+	(Owner [this]
+		(:owner this))
+	(Categoria [this]
+		"apto")
+	(Area [this]
+		(:ac this))
+	(Preco [this]
+		(case (:lazer this)
+			"N" (* (:pm2ac this) (* (:ac this) (+ 0.9 (/ (:andar this) (:andares this)))))
+			"S" (* (* (:pm2ac this) (* (:ac this) (+ 0.9 (/ (:andar this) (:andares this))))) 1.15)
+			0))
+
+	(Info [this]
+		nil)
+)
