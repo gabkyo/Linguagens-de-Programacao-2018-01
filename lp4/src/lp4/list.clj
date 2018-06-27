@@ -1,7 +1,12 @@
 (in-ns 'lp4.main)
 
 (defn sortImoveis [a b]
-	(compare [(Preco b) (Id a)] [(Preco a) (Id b)])) ;;retorna qual tem o maior preco ou menor id se preco eh igual
+	(compare [(Preco a) (Id a)] [(Preco b) (Id b)])) 
+	;;preco crescente id decrescente
 
-(defn testar [a]
-	(pop a))
+
+(defn remover [lista id]
+	(remove (fn [x] (= (Id x) id)) lista))
+
+(defn criarCasas [lista plimite alimite] ;;retorna lista com casas com preco < plim e area >alimite
+	(filter (fn [x] (and (and (= (Categoria x) "casa") (< (Preco x) plimite)) (> (Area x) alimite))) lista))
