@@ -1,30 +1,47 @@
 (in-ns 'lp4.main)
+(load "class")
+(load "file")
+(require '[clojure.string :as str])
+(require '[clojure.java.io :as io])
 
-(defn catalogo [lista] (
-	if (.exists (clojure.java.io/file "catalogo.txt"))
-		(with-open [rdr (reader "catalogo.txt")]
-			((def linhas (line-seq rdr))
-				(while (not= linhas nil)
-					((def categoria (first linhas))
-						(def linhas (rest linhas))
-						(def id (bigdec (first linhas)))
-						(def linhas (rest linhas))
-						(def owner (first linhas))
-						(def linhas (rest linhas))
-						(case categoria
-							"casa" ()
-							"apto" ()
-							"trapez" ()
-							"triang" ()
-							"retang" ()
-							(println "Categoria: " categoria)
+(defn parse-int [s]
+   (Integer. (re-find  #"\d+" s )))
+
+(defn catalogo []
+	(let [lista (seq nil)]
+		(if (.exists (io/file "catalogo.txt")) 
+		(do
+			(def linhas (str/split (slurp "catalogo.txt") #"\n"))
+			(while (not (empty? linhas)) 
+				(do
+				(def categoria (first linhas))
+				(def linhas (rest linhas))
+				(def id (Integer/parseInt (first linhas)))
+				(def linhas (rest linhas))
+				(def owner (first linhas))
+				(def linhas (rest linhas))
+				(case categoria
+					"casa" (do
+							()
 						)
-						(def linhas (rest (rest linhas)))
-					)
+					"apto" (do
+
+						) 
+					"trapez" (do
+
+						)
+					"triang" (do
+
+						)
+					"retang" (do
+
+						)
+					(println "Categoria:" categoria))
+				(def linhas (rest linhas))
 				)
 			)
 		)
-	(println "Catalogo nao encontrado.")
+		(println "Catalogo nao encontrado."))
+		lista
 	)
-	(lista)
 )

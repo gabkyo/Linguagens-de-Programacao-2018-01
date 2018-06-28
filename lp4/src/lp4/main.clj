@@ -2,15 +2,11 @@
   (:gen-class :main true))
 (load "class")
 (load "list")
+(load "file")
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (def a (Terreno. 1 "Roger" "retang" "A" 10 10 0 10))
-  (def b (Casa. 2 "OK" 1 1 2 10 10 10 10))
-  (def c (Apto. 3 "lol" 1 1 2 10 10 "S" 10))
-  (def d (Apto. 4 "lol" 1 1 2 10 10 "S" 10))
-  (def teste (vector c b a d))
-  (def teste (sort sortImoveis teste))
-  (println (Preco a) (Preco b) (Preco c))
-  (println teste))
+  (def lista (catalogo))
+  ;(def lista (sort sortImoveis lista))
+  (println lista))
